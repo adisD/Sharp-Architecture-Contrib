@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--EXTERNAL_PROPERTIES: build.number-->
+<project name="SharpArchContrib" default="dist">
+  <property name="project.dir" value="${project::get-base-directory()}" />
+  <property name="version" value="0.1.0.0"/>
+  <property name="configuration" value="Release"/>
+  <property name="versionInfo.name" value="CommonAssemblyInfo.cs"/>
+  <!-- Test -->
+  <!-- Artifact directories -->
+  <property name="output.dir" value="${project.dir}\BuildOutput"/>
+  <property name="bin.dir" value="${output.dir}\bin"/>
+  <property name="install.dir" value="${output.dir}\install"/>
+  <property name="test.output.dir" value="${output.dir}\test"/>
+  
+  <!-- Tool directories -->
+  <property name="tools.dir" value="${project.dir}\tools"/>
+  <property name="nunit.dir" value="${tools.dir}\nunit\bin"/>
+
+  
+  <!-- Version Info -->
+  <property name="appVersion" value="0.1.0"/>
+  <property name="revision" value="0"/>
+  
+  <!-- *********************************************************
+       The build 
+       *********************************************************-->
+
+  <target name="help">
+    <!--Enter tasks for help target-->
+    <echo message="The skeleton file for the build process is designed to execute the following targets in turn from the target dist:"/>
+    <echo message="-- clean"/>
+    <echo message="-- version"/>
+    <echo message="-- build"/>
+    <echo message="-- test"/>
+    <echo message="-- document"/>
+    <echo message="-- publish"/>
+    <echo message=""/>
+    <echo message="use nant -projecthelp for more"/>
+  </target>
+
+  <target name="dist" description="Build distribution and test" depends="clean, version, build, test, document, publish"/>
+
+  <target name="clean" description="Clean up the build environment.">
+    <echo message="======================================================="/>
+    <echo message="configuration = ${configuration}"/>
+    <echo message="======================================================="/>
+    <if test="${property::exists('teamcity.dotnet.nunitaddin')}">
+      <copy todir="${nunit.dir}\addins">
+        <fileset>
+          <include name="${teamcity.dotnet.nunitaddin}-2.5.0.dll"/>
+        </fileset>
+      </copy>
+    </if>
+    <delete dir="${output.dir}" failonerror="false"/>
+    <mkdir dir="${output.dir}"/>
+    <mkdir dir="${bin.dir}"/>
+  </target>
+
+  <target name="build" description="Compile the application." depends="ngenPostSharp">
+    <msbuild project="SharpArchContrib.sln" target="Rebuild">
+      <property name="Configuration" value="${configuration}"/>
+    </msbuild>
+  </target>
+
+  <target name="version">
+    <if test="${property::exists('build.number')}">
+      <property name="revision" value="${build.number}"/>
+    </if>
+    <asminfo output="${project.dir}\src\SharpArchContrib.Core\Properties\CommonAssemblyInfo.cs" language="CSharp">
+      <imports>
+        <import namespace="System.Reflection" />
+        <import namespace="System.Runtime.InteropServices" />
+      </imports>
+      <attributes>
+        <attribute type="ComVisibleAttribute" value="false" />
+        <attribute type="AssemblyCultureAttribute" value=""/>
+        <attribute type="AssemblyVersionAttribute" value="${appVersion}" />
+        <attribute type="AssemblyFileVersionAttribute" value="${appVersion}.${revision}"/>
+      </attributes>
+    </asminfo>
+  </target>
+
+  <target name="test">
+    <exec program="nunit-console.exe" workingdir="${nunit.dir}" basedir="${nunit.dir}" resultproperty="testResult">
+      <arg value="${project.dir}\src\SharpArchContrib.Tests\bin\${configuration}\SharpArchContrib.Tests.dll"/>
+    </exec>
+  </target>
+
+  <target name="document"/>
+
+  <target name="publish">
+    <copy todir="${bin.dir}">
+      <fileset basedir="${project.dir}\src\SharpArchContrib.Tests\bin\${configuration}">
+        <include name="SharpArchContrib.*.dll"/>
+        <exclude name="SharpArchContrib.Tests.dll"/>
+      </fileset>
+    </copy>
+  </target>
+
+
+  <!-- *********************************************************
+       Useful Targets 
+       *********************************************************-->
+  <target name="ngenPostSharp" description="Run Once. Improve perf of PostSharp.">
+    <exec program=" ${framework::get-assembly-directory(framework::get-target-framework())}\ngen.exe" 
+          commandline='install "${tools.dir}\PostSharp\postsharp.exe"'/>
+  </target>
+</project>
+
