@@ -1,41 +1,44 @@
 using System;
-using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Reflection;
 using FluentNHibernate.Automapping;
 using NHibernate.Tool.hbm2ddl;
-using NUnit.Framework;
-using SharpArch.Core;
 using SharpArch.Core.PersistenceSupport;
 using SharpArch.Data.NHibernate;
 using SharpArch.Data.NHibernate.FluentNHibernate;
 using SharpArchContrib.Data.NHibernate;
 using Tests.DomainModel.Entities;
 
-namespace Tests.SharpArchContrib.Data.NHibernate {
-    public class TransactionTestsBase {
+namespace Tests.SharpArchContrib.Data.NHibernate
+{
+    public class TransactionTestsBase
+    {
         protected IRepository<TestEntity> testEntityRepository;
 
-        public void SetUp() {
+        public void SetUp()
+        {
             InitializeDatabase();
             InitializeData();
         }
 
-        protected virtual void InitializeData() {
+        protected virtual void InitializeData()
+        {
             testEntityRepository = new Repository<TestEntity>();
         }
 
-        public void TearDown() {
+        public void TearDown()
+        {
             Shutdown();
         }
 
         private void InitializeDatabase()
         {
-            if (File.Exists("db.dat")) {
+            if (File.Exists("db.dat"))
+            {
                 File.Delete("db.dat");
             }
-            var cfg = InitializeNHibernateSession();
+            global::NHibernate.Cfg.Configuration cfg = InitializeNHibernateSession();
             IDbConnection connection = NHibernateSession.Current.Connection;
             new SchemaExport(cfg).Execute(false, true, false, connection, null);
         }
@@ -44,21 +47,27 @@ namespace Tests.SharpArchContrib.Data.NHibernate {
         {
             string[] mappingAssemblies = GetMappingAssemblies();
             AutoPersistenceModel autoPersistenceModel = GetAutoPersistenceModel(mappingAssemblies);
-            return NHibernateSession.Init(new ThreadSessionStorage(), mappingAssemblies, autoPersistenceModel, "HibernateFile.cfg.xml");
+            return NHibernateSession.Init(new ThreadSessionStorage(), mappingAssemblies, autoPersistenceModel,
+                                          "HibernateFile.cfg.xml");
         }
 
-        private string[] GetMappingAssemblies() {
-            return new string[] {"SharpArchContrib.Tests"};
+        private string[] GetMappingAssemblies()
+        {
+            return new[] {"SharpArchContrib.Tests"};
         }
 
-        private AutoPersistenceModel GetAutoPersistenceModel(string[] assemblies) {
-            foreach (var asmName in assemblies) {
+        private AutoPersistenceModel GetAutoPersistenceModel(string[] assemblies)
+        {
+            foreach (string asmName in assemblies)
+            {
                 Assembly asm = Assembly.Load(asmName);
                 Type[] asmTypes = asm.GetTypes();
 
-                foreach (Type asmType in asmTypes) {
-                    if (typeof(IAutoPersistenceModelGenerator).IsAssignableFrom(asmType)) {
-                        IAutoPersistenceModelGenerator generator = Activator.CreateInstance(asmType) as IAutoPersistenceModelGenerator;
+                foreach (Type asmType in asmTypes)
+                {
+                    if (typeof (IAutoPersistenceModelGenerator).IsAssignableFrom(asmType))
+                    {
+                        var generator = Activator.CreateInstance(asmType) as IAutoPersistenceModelGenerator;
                         return generator.Generate();
                     }
                 }

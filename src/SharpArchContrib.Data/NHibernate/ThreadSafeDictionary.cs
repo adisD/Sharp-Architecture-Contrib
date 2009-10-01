@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace SharpArchContrib.Data.NHibernate {
+namespace SharpArchContrib.Data.NHibernate
+{
     /// <summary>
     /// Taken from http://devplanet.com/blogs/brianr/archive/2008/09/29/thread-safe-dictionary-update.aspx
     /// </summary>
@@ -13,12 +14,13 @@ namespace SharpArchContrib.Data.NHibernate {
     public class ThreadSafeDictionary<TKey, TValue> : IThreadSafeDictionary<TKey, TValue>
     {
         //This is the internal dictionary that we are wrapping
-        IDictionary<TKey, TValue> dict = new Dictionary<TKey, TValue>();
+        private IDictionary<TKey, TValue> dict = new Dictionary<TKey, TValue>();
 
 
-        [NonSerialized]
-        ReaderWriterLockSlim dictionaryLock = Locks.GetLockInstance(LockRecursionPolicy.NoRecursion); //setup the lock;
+        [NonSerialized] private ReaderWriterLockSlim dictionaryLock =
+            Locks.GetLockInstance(LockRecursionPolicy.NoRecursion); //setup the lock;
 
+        #region IThreadSafeDictionary<TKey,TValue> Members
 
         /// <summary>
         /// This is a blind remove. Prevents the need to check for existence first.
@@ -26,13 +28,13 @@ namespace SharpArchContrib.Data.NHibernate {
         /// <param name="key">Key to remove</param>
         public void RemoveSafe(TKey key)
         {
-            using (new ReadLock(this.dictionaryLock))
+            using (new ReadLock(dictionaryLock))
             {
-                if (this.dict.ContainsKey(key))
+                if (dict.ContainsKey(key))
                 {
-                    using (new WriteLock(this.dictionaryLock))
+                    using (new WriteLock(dictionaryLock))
                     {
-                        this.dict.Remove(key);
+                        dict.Remove(key);
                     }
                 }
             }
@@ -46,42 +48,42 @@ namespace SharpArchContrib.Data.NHibernate {
         /// <param name="newValue">New Value</param>
         public void MergeSafe(TKey key, TValue newValue)
         {
-            using (new WriteLock(this.dictionaryLock)) // take a writelock immediately since we will always be writing
+            using (new WriteLock(dictionaryLock)) // take a writelock immediately since we will always be writing
             {
-                if (this.dict.ContainsKey(key))
+                if (dict.ContainsKey(key))
                 {
-                    this.dict.Remove(key);
+                    dict.Remove(key);
                 }
 
 
-                this.dict.Add(key, newValue);
+                dict.Add(key, newValue);
             }
         }
 
 
         public virtual bool Remove(TKey key)
         {
-            using (new WriteLock(this.dictionaryLock))
+            using (new WriteLock(dictionaryLock))
             {
-                return this.dict.Remove(key);
+                return dict.Remove(key);
             }
         }
 
 
         public virtual bool ContainsKey(TKey key)
         {
-            using (new ReadOnlyLock(this.dictionaryLock))
+            using (new ReadOnlyLock(dictionaryLock))
             {
-                return this.dict.ContainsKey(key);
+                return dict.ContainsKey(key);
             }
         }
 
 
         public virtual bool TryGetValue(TKey key, out TValue value)
         {
-            using (new ReadOnlyLock(this.dictionaryLock))
+            using (new ReadOnlyLock(dictionaryLock))
             {
-                return this.dict.TryGetValue(key, out value);
+                return dict.TryGetValue(key, out value);
             }
         }
 
@@ -90,16 +92,16 @@ namespace SharpArchContrib.Data.NHibernate {
         {
             get
             {
-                using (new ReadOnlyLock(this.dictionaryLock))
+                using (new ReadOnlyLock(dictionaryLock))
                 {
-                    return this.dict[key];
+                    return dict[key];
                 }
             }
             set
             {
-                using (new WriteLock(this.dictionaryLock))
+                using (new WriteLock(dictionaryLock))
                 {
-                    this.dict[key] = value;
+                    dict[key] = value;
                 }
             }
         }
@@ -109,9 +111,9 @@ namespace SharpArchContrib.Data.NHibernate {
         {
             get
             {
-                using (new ReadOnlyLock(this.dictionaryLock))
+                using (new ReadOnlyLock(dictionaryLock))
                 {
-                    return new List<TKey>(this.dict.Keys);
+                    return new List<TKey>(dict.Keys);
                 }
             }
         }
@@ -121,9 +123,9 @@ namespace SharpArchContrib.Data.NHibernate {
         {
             get
             {
-                using (new ReadOnlyLock(this.dictionaryLock))
+                using (new ReadOnlyLock(dictionaryLock))
                 {
-                    return new List<TValue>(this.dict.Values);
+                    return new List<TValue>(dict.Values);
                 }
             }
         }
@@ -131,9 +133,9 @@ namespace SharpArchContrib.Data.NHibernate {
 
         public virtual void Clear()
         {
-            using (new WriteLock(this.dictionaryLock))
+            using (new WriteLock(dictionaryLock))
             {
-                this.dict.Clear();
+                dict.Clear();
             }
         }
 
@@ -142,9 +144,9 @@ namespace SharpArchContrib.Data.NHibernate {
         {
             get
             {
-                using (new ReadOnlyLock(this.dictionaryLock))
+                using (new ReadOnlyLock(dictionaryLock))
                 {
-                    return this.dict.Count;
+                    return dict.Count;
                 }
             }
         }
@@ -152,45 +154,45 @@ namespace SharpArchContrib.Data.NHibernate {
 
         public virtual bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            using (new ReadOnlyLock(this.dictionaryLock))
+            using (new ReadOnlyLock(dictionaryLock))
             {
-                return this.dict.Contains(item);
+                return dict.Contains(item);
             }
         }
 
 
         public virtual void Add(KeyValuePair<TKey, TValue> item)
         {
-            using (new WriteLock(this.dictionaryLock))
+            using (new WriteLock(dictionaryLock))
             {
-                this.dict.Add(item);
+                dict.Add(item);
             }
         }
 
 
         public virtual void Add(TKey key, TValue value)
         {
-            using (new WriteLock(this.dictionaryLock))
+            using (new WriteLock(dictionaryLock))
             {
-                this.dict.Add(key, value);
+                dict.Add(key, value);
             }
         }
 
 
         public virtual bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            using (new WriteLock(this.dictionaryLock))
+            using (new WriteLock(dictionaryLock))
             {
-                return this.dict.Remove(item);
+                return dict.Remove(item);
             }
         }
 
 
         public virtual void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            using (new ReadOnlyLock(this.dictionaryLock))
+            using (new ReadOnlyLock(dictionaryLock))
             {
-                this.dict.CopyTo(array, arrayIndex);
+                dict.CopyTo(array, arrayIndex);
             }
         }
 
@@ -199,9 +201,9 @@ namespace SharpArchContrib.Data.NHibernate {
         {
             get
             {
-                using (new ReadOnlyLock(this.dictionaryLock))
+                using (new ReadOnlyLock(dictionaryLock))
                 {
-                    return this.dict.IsReadOnly;
+                    return dict.IsReadOnly;
                 }
             }
         }
@@ -209,14 +211,18 @@ namespace SharpArchContrib.Data.NHibernate {
 
         public virtual IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            throw new NotSupportedException("Cannot enumerate a threadsafe dictionary.  Instead, enumerate the keys or values collection");
+            throw new NotSupportedException(
+                "Cannot enumerate a threadsafe dictionary.  Instead, enumerate the keys or values collection");
         }
 
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotSupportedException("Cannot enumerate a threadsafe dictionary.  Instead, enumerate the keys or values collection");
+            throw new NotSupportedException(
+                "Cannot enumerate a threadsafe dictionary.  Instead, enumerate the keys or values collection");
         }
+
+        #endregion
     }
 
     public static class Locks
@@ -296,8 +302,11 @@ namespace SharpArchContrib.Data.NHibernate {
             _Locks = locks;
         }
 
+        #region IDisposable Members
 
         public abstract void Dispose();
+
+        #endregion
     }
 
     public class ReadLock : BaseLock
@@ -305,13 +314,13 @@ namespace SharpArchContrib.Data.NHibernate {
         public ReadLock(ReaderWriterLockSlim locks)
             : base(locks)
         {
-            Locks.GetReadLock(this._Locks);
+            Locks.GetReadLock(_Locks);
         }
 
 
         public override void Dispose()
         {
-            Locks.ReleaseReadLock(this._Locks);
+            Locks.ReleaseReadLock(_Locks);
         }
     }
 
@@ -320,13 +329,13 @@ namespace SharpArchContrib.Data.NHibernate {
         public ReadOnlyLock(ReaderWriterLockSlim locks)
             : base(locks)
         {
-            Locks.GetReadOnlyLock(this._Locks);
+            Locks.GetReadOnlyLock(_Locks);
         }
 
 
         public override void Dispose()
         {
-            Locks.ReleaseReadOnlyLock(this._Locks);
+            Locks.ReleaseReadOnlyLock(_Locks);
         }
     }
 
@@ -335,13 +344,13 @@ namespace SharpArchContrib.Data.NHibernate {
         public WriteLock(ReaderWriterLockSlim locks)
             : base(locks)
         {
-            Locks.GetWriteLock(this._Locks);
+            Locks.GetWriteLock(_Locks);
         }
 
 
         public override void Dispose()
         {
-            Locks.ReleaseWriteLock(this._Locks);
+            Locks.ReleaseWriteLock(_Locks);
         }
     }
 }

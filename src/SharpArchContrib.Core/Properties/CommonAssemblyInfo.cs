@@ -15,4 +15,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCultureAttribute("")]
 [assembly: AssemblyVersionAttribute("0.1.0")]
 [assembly: AssemblyFileVersionAttribute("0.1.0.0")]
+[assembly: AssemblyCopyrightAttribute("Copyright © Codai, LLC 2009")]
 

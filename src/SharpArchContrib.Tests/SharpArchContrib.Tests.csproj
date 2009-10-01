@@ -149,6 +149,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLocatorInitializer.cs" />
     <Compile Include="SharpArchContrib.Core\Logging\DebugLevelTests.cs" />
+    <Compile Include="SharpArchContrib.Core\Logging\ExceptionHandlerAttributeTests.cs" />
     <Compile Include="SharpArchContrib.Data\NHibernate\ITransactionTestProvider.cs" />
     <Compile Include="SharpArchContrib.Data\NHibernate\NHibernateTransactionTestProvider.cs" />
     <Compile Include="SharpArchContrib.Data\NHibernate\NHibernateUnitOfWorkTestProvider.cs" />

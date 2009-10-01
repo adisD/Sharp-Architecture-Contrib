@@ -1,11 +1,13 @@
 ﻿using FluentNHibernate.Conventions;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Instances;
 
-namespace Tests.DomainModel.Conventions {
-    public class PrimaryKeyConvention : IIdConvention {
-        #region IConvention<IIdentityInspector,IIdentityInstance> Members
+namespace Tests.DomainModel.Conventions
+{
+    public class PrimaryKeyConvention : IIdConvention
+    {
+        #region IIdConvention Members
 
-        public void Apply(FluentNHibernate.Conventions.Instances.IIdentityInstance instance)
+        public void Apply(IIdentityInstance instance)
         {
             instance.Column(instance.EntityType.Name + "Id");
             instance.UnsavedValue("0");

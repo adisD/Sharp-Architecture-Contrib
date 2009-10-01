@@ -20,6 +20,7 @@
   <!-- Version Info -->
   <property name="appVersion" value="0.1.0"/>
   <property name="revision" value="0"/>
+  <property name="company.name" value="Codai, LLC"/>
   
   <!-- *********************************************************
        The build 
@@ -76,6 +77,7 @@
         <attribute type="AssemblyCultureAttribute" value=""/>
         <attribute type="AssemblyVersionAttribute" value="${appVersion}" />
         <attribute type="AssemblyFileVersionAttribute" value="${appVersion}.${revision}"/>
+        <attribute type="AssemblyCopyrightAttribute" value="Copyright © ${company.name} ${datetime::get-year(datetime::now())}" />
       </attributes>
     </asminfo>
   </target>
@@ -92,7 +94,8 @@
     <copy todir="${bin.dir}">
       <fileset basedir="${project.dir}\src\SharpArchContrib.Tests\bin\${configuration}">
         <include name="SharpArchContrib.*.dll"/>
-        <exclude name="SharpArchContrib.Tests.dll"/>
+        <include name="SharpArchContrib.*.pdb"/>
+        <exclude name="SharpArchContrib.Tests.pdb"/>
       </fileset>
     </copy>
   </target>

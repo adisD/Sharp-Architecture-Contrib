@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Collections.Generic;
 
-namespace SharpArchContrib.Data.NHibernate {
+namespace SharpArchContrib.Data.NHibernate
+{
     /// <summary>
     /// Taken from http://devplanet.com/blogs/brianr/archive/2008/09/29/thread-safe-dictionary-update.aspx
     /// </summary>

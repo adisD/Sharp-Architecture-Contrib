@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using log4net.Config;
 using NUnit.Framework;
 using Tests.Configuration;
@@ -13,7 +9,8 @@ namespace Tests
     public class AssemblySetup
     {
         [SetUp]
-        public void SetUp() {
+        public void SetUp()
+        {
             InitializeDirectories();
             InitializeLog4Net();
             InitalizeServiceLocator();
@@ -31,7 +28,8 @@ namespace Tests
 
         private void InitializeDirectories()
         {
-            if (Directory.Exists(Config.TestDataDir)) {
+            if (Directory.Exists(Config.TestDataDir))
+            {
                 Directory.Delete(Config.TestDataDir, true);
             }
             Directory.CreateDirectory(Config.TestDataDir);

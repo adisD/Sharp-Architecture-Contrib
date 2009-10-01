@@ -1,23 +1,29 @@
 ﻿using System;
 using PostSharp.Laos;
 
-namespace SharpArchContrib.Data.NHibernate {
+namespace SharpArchContrib.Data.NHibernate
+{
     [Serializable]
-    public abstract class TransactionManagerBase : ITransactionManager {
+    public abstract class TransactionManagerBase : ITransactionManager
+    {
+        [ThreadStatic] private static int perThreadTransactionDepth;
+
         #region ITransactionManager Members
 
-        [ThreadStatic]
-        private static int perThreadTransactionDepth;
+        public int TransactionDepth
+        {
+            get { return perThreadTransactionDepth; }
+        }
 
-        public int TransactionDepth { get { return perThreadTransactionDepth; } }
-
-        public virtual void PushTransaction(string factoryKey, MethodExecutionEventArgs eventArgs) {
+        public virtual void PushTransaction(string factoryKey, MethodExecutionEventArgs eventArgs)
+        {
             perThreadTransactionDepth++;
         }
 
         public abstract bool TransactionIsActive(string factoryKey);
 
-        public virtual void PopTransaction(string factoryKey, MethodExecutionEventArgs eventArgs) {
+        public virtual void PopTransaction(string factoryKey, MethodExecutionEventArgs eventArgs)
+        {
             perThreadTransactionDepth--;
         }
 

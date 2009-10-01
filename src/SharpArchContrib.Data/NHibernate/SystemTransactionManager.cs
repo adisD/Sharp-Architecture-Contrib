@@ -4,13 +4,16 @@ using NHibernate;
 using PostSharp.Laos;
 using SharpArch.Data.NHibernate;
 
-namespace SharpArchContrib.Data.NHibernate {
+namespace SharpArchContrib.Data.NHibernate
+{
     /// <summary>
     /// Provides support for System.Transaction transactions
     /// </summary>
     [Serializable]
-    public class SystemTransactionManager : TransactionManagerBase {
-        public override void PushTransaction(string factoryKey, MethodExecutionEventArgs eventArgs) {
+    public class SystemTransactionManager : TransactionManagerBase
+    {
+        public override void PushTransaction(string factoryKey, MethodExecutionEventArgs eventArgs)
+        {
             base.PushTransaction(factoryKey, eventArgs);
 
             //If this is a new transaction, we have to close the session,
@@ -32,13 +35,16 @@ namespace SharpArchContrib.Data.NHibernate {
             }
         }
 
-        public override bool TransactionIsActive(string factoryKey) {
+        public override bool TransactionIsActive(string factoryKey)
+        {
             return Transaction.Current != null;
         }
 
-        public override void PopTransaction(string factoryKey, MethodExecutionEventArgs eventArgs) {
+        public override void PopTransaction(string factoryKey, MethodExecutionEventArgs eventArgs)
+        {
             var transactionScope = (eventArgs.InstanceTag as TransactionScope);
-            if (transactionScope != null) {
+            if (transactionScope != null)
+            {
                 transactionScope.Dispose();
                 eventArgs.InstanceTag = null;
             }
@@ -53,7 +59,8 @@ namespace SharpArchContrib.Data.NHibernate {
         public override void CommitTransaction(string factoryKey, MethodExecutionEventArgs eventArgs)
         {
             var transactionScope = (eventArgs.InstanceTag as TransactionScope);
-            if (transactionScope != null) {
+            if (transactionScope != null)
+            {
                 transactionScope.Complete();
             }
         }

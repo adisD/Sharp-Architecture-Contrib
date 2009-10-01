@@ -1,11 +1,13 @@
 ﻿using FluentNHibernate.Conventions;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Instances;
 
-namespace Tests.DomainModel.Conventions {
-    public class ReferenceConvention : IReferenceConvention {
-        #region IConvention<IManyToOneInspector,IManyToOneInstance> Members
+namespace Tests.DomainModel.Conventions
+{
+    public class ReferenceConvention : IReferenceConvention
+    {
+        #region IReferenceConvention Members
 
-        public void Apply(FluentNHibernate.Conventions.Instances.IManyToOneInstance instance)
+        public void Apply(IManyToOneInstance instance)
         {
             instance.Column(instance.Property.Name + "Id");
         }

@@ -3,17 +3,24 @@ using NUnit.Framework;
 using SharpArch.Testing.NUnit;
 using SharpArchContrib.Core.Logging;
 
-namespace Tests.SharpArchContrib.Core.Logging {
+namespace Tests.SharpArchContrib.Core.Logging
+{
     [TestFixture]
-    public class DebugLevelTests {
+    public class DebugLevelTests
+    {
         [Log]
-        private void DebugLevelTestsCallThatLogs() {}
+        private void DebugLevelTestsCallThatLogs()
+        {
+        }
 
         [Log(EntryLevel = LoggingLevel.Info)]
-        private void DebugLevelTestsCallThatDoesNotLog() {}
+        private void DebugLevelTestsCallThatDoesNotLog()
+        {
+        }
 
         [Test]
-        public void LoggingDebugEntryWorks() {
+        public void LoggingDebugEntryWorks()
+        {
             DebugLevelTestsCallThatLogs();
             DebugLevelTestsCallThatDoesNotLog();
             string logPath =

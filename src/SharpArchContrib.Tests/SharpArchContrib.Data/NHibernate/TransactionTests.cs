@@ -1,25 +1,31 @@
 using NHibernate.Exceptions;
 using NUnit.Framework;
 
-namespace Tests.SharpArchContrib.Data.NHibernate {
+namespace Tests.SharpArchContrib.Data.NHibernate
+{
     [TestFixture]
-    public class TransactionTests : TransactionTestsBase {
+    public class TransactionTests : TransactionTestsBase
+    {
         private const string TestEntityName = "TransactionTest";
-        private ITransactionTestProvider[] transactionTestProviders = new ITransactionTestProvider[]
-                                                                      {
-                                                                          new SystemTransactionTestProvider(),
-                                                                          new NHibernateTransactionTestProvider(),
-                                                                          new SystemUnitOfWorkTestProvider(),
-                                                                          new NHibernateUnitOfWorkTestProvider()
-                                                                      };
 
-        protected override void InitializeData() {
+        private ITransactionTestProvider[] transactionTestProviders = new ITransactionTestProvider[]
+                                                                          {
+                                                                              new SystemTransactionTestProvider(),
+                                                                              new NHibernateTransactionTestProvider(),
+                                                                              new SystemUnitOfWorkTestProvider(),
+                                                                              new NHibernateUnitOfWorkTestProvider()
+                                                                          };
+
+        protected override void InitializeData()
+        {
             base.InitializeData();
             transactionTestProviders = GenerateTransactionManagers();
         }
 
-        private ITransactionTestProvider[] GenerateTransactionManagers() {
-            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders) {
+        private ITransactionTestProvider[] GenerateTransactionManagers()
+        {
+            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders)
+            {
                 transactionTestProvider.TestEntityRepository = testEntityRepository;
             }
 
@@ -31,8 +37,10 @@ namespace Tests.SharpArchContrib.Data.NHibernate {
         //test feature of Nunit 2.5 but, unfortunately that doesn't work with all test runners (e.g. Resharper)
 
         [Test]
-        public void MultipleOperations() {
-            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders) {
+        public void MultipleOperations()
+        {
+            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders)
+            {
                 SetUp();
                 transactionTestProvider.InitTransactionManager();
                 transactionTestProvider.DoCommit(TestEntityName);
@@ -45,8 +53,10 @@ namespace Tests.SharpArchContrib.Data.NHibernate {
         }
 
         [Test]
-        public void MultipleOperationsRollbackFirst() {
-            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders) {
+        public void MultipleOperationsRollbackFirst()
+        {
+            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders)
+            {
                 SetUp();
                 transactionTestProvider.InitTransactionManager();
                 transactionTestProvider.DoRollback();
@@ -59,8 +69,10 @@ namespace Tests.SharpArchContrib.Data.NHibernate {
         }
 
         [Test]
-        public void MultipleOperationsRollbackLast() {
-            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders) {
+        public void MultipleOperationsRollbackLast()
+        {
+            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders)
+            {
                 SetUp();
                 transactionTestProvider.InitTransactionManager();
                 transactionTestProvider.DoCommit(TestEntityName + "1");
@@ -73,8 +85,10 @@ namespace Tests.SharpArchContrib.Data.NHibernate {
         }
 
         [Test]
-        public void NestedCommit() {
-            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders) {
+        public void NestedCommit()
+        {
+            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders)
+            {
                 SetUp();
                 transactionTestProvider.InitTransactionManager();
                 transactionTestProvider.DoNestedCommit();
@@ -84,8 +98,10 @@ namespace Tests.SharpArchContrib.Data.NHibernate {
         }
 
         [Test]
-        public void NestedForceRollback() {
-            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders) {
+        public void NestedForceRollback()
+        {
+            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders)
+            {
                 SetUp();
                 transactionTestProvider.InitTransactionManager();
                 transactionTestProvider.DoNestedForceRollback();
@@ -95,8 +111,10 @@ namespace Tests.SharpArchContrib.Data.NHibernate {
         }
 
         [Test]
-        public void NestedInnerForceRollback() {
-            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders) {
+        public void NestedInnerForceRollback()
+        {
+            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders)
+            {
                 SetUp();
                 transactionTestProvider.InitTransactionManager();
                 transactionTestProvider.DoNestedInnerForceRollback();
@@ -106,8 +124,10 @@ namespace Tests.SharpArchContrib.Data.NHibernate {
         }
 
         [Test]
-        public void Rollback() {
-            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders) {
+        public void Rollback()
+        {
+            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders)
+            {
                 SetUp();
                 transactionTestProvider.InitTransactionManager();
                 transactionTestProvider.DoRollback();
@@ -117,8 +137,10 @@ namespace Tests.SharpArchContrib.Data.NHibernate {
         }
 
         [Test]
-        public void RollsbackOnException() {
-            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders) {
+        public void RollsbackOnException()
+        {
+            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders)
+            {
                 SetUp();
                 transactionTestProvider.InitTransactionManager();
                 transactionTestProvider.DoCommit(TestEntityName);
@@ -131,8 +153,10 @@ namespace Tests.SharpArchContrib.Data.NHibernate {
         }
 
         [Test]
-        public void RollsbackOnExceptionWithSilentException() {
-            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders) {
+        public void RollsbackOnExceptionWithSilentException()
+        {
+            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders)
+            {
                 SetUp();
                 transactionTestProvider.InitTransactionManager();
                 transactionTestProvider.DoCommit(TestEntityName);

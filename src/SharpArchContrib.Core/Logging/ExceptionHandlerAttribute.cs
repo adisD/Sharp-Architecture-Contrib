@@ -2,19 +2,24 @@ using System;
 using Microsoft.Practices.ServiceLocation;
 using PostSharp.Laos;
 
-namespace SharpArchContrib.Core.Logging {
+namespace SharpArchContrib.Core.Logging
+{
     [Serializable]
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public sealed class ExceptionHandlerAttribute : OnExceptionAspect
     {
         private IExceptionLogger exceptionLogger;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ExceptionHandlerAttribute()
         {
             IsSilent = false;
         }
 
         public bool IsSilent { get; set; }
+
         public object ReturnValue { get; set; }
 
         private IExceptionLogger ExceptionLogger
@@ -31,7 +36,7 @@ namespace SharpArchContrib.Core.Logging {
 
         public override void OnException(MethodExecutionEventArgs eventArgs)
         {
-            ExceptionLogger.LogException(eventArgs.Exception, IsSilent, eventArgs.Instance.GetType());
+            ExceptionLogger.LogException(eventArgs.Exception, IsSilent, eventArgs.Method.DeclaringType);
             if (IsSilent)
             {
                 eventArgs.FlowBehavior = FlowBehavior.Return;

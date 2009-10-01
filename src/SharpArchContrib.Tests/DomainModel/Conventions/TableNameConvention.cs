@@ -1,11 +1,13 @@
 ﻿using FluentNHibernate.Conventions;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Instances;
 
-namespace Tests.DomainModel.Conventions {
-    public class TableNameConvention : IClassConvention {
-        #region IConvention<IClassInspector,IClassInstance> Members
+namespace Tests.DomainModel.Conventions
+{
+    public class TableNameConvention : IClassConvention
+    {
+        #region IClassConvention Members
 
-        public void Apply(FluentNHibernate.Conventions.Instances.IClassInstance instance)
+        public void Apply(IClassInstance instance)
         {
             instance.Table(Inflector.Net.Inflector.Pluralize(instance.EntityType.Name));
         }

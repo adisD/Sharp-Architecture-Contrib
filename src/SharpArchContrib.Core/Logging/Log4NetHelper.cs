@@ -1,10 +1,14 @@
 ﻿using System;
 using log4net;
 
-namespace SharpArchContrib.Core.Logging {
-    public static class Log4NetHelper {
-        public static void Log(this ILog logger, LoggingLevel level, string message) {
-            switch (level) {
+namespace SharpArchContrib.Core.Logging
+{
+    public static class Log4NetHelper
+    {
+        public static void Log(this ILog logger, LoggingLevel level, string message)
+        {
+            switch (level)
+            {
                 case LoggingLevel.All:
                 case LoggingLevel.Debug:
                     logger.Debug(message);
@@ -24,29 +28,66 @@ namespace SharpArchContrib.Core.Logging {
             }
         }
 
-        public static void Log(this ILog logger, LoggingLevel level, Exception err) {
+        public static void Log(this ILog logger, LoggingLevel level, string message, Exception err)
+        {
             switch (level)
             {
                 case LoggingLevel.All:
                 case LoggingLevel.Debug:
-                    logger.Debug(err);
+                    if (message == null)
+                    {
+                        logger.Debug(err);
+                    }
+                    else
+                    {
+                        logger.Debug(message, err);
+                    }
                     break;
                 case LoggingLevel.Info:
-                    logger.Info(err);
+                    if (message == null)
+                    {
+                        logger.Info(err);
+                    }
+                    else
+                    {
+                        logger.Info(message, err);
+                    }
                     break;
                 case LoggingLevel.Warn:
-                    logger.Warn(err);
+                    if (message == null)
+                    {
+                        logger.Warn(err);
+                    }
+                    else
+                    {
+                        logger.Warn(message, err);
+                    }
                     break;
                 case LoggingLevel.Error:
-                    logger.Error(err);
+                    if (message == null)
+                    {
+                        logger.Error(err);
+                    }
+                    else
+                    {
+                        logger.Error(message, err);
+                    }
                     break;
                 case LoggingLevel.Fatal:
-                    logger.Fatal(err);
+                    if (message == null)
+                    {
+                        logger.Fatal(err);
+                    }
+                    else
+                    {
+                        logger.Fatal(message, err);
+                    }
                     break;
             }
         }
 
-        public static bool IsEnabledFor(this ILog logger, LoggingLevel level) {
+        public static bool IsEnabledFor(this ILog logger, LoggingLevel level)
+        {
             switch (level)
             {
                 case LoggingLevel.All:
