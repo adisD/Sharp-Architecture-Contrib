@@ -12,21 +12,6 @@ URLs of Interest:
 
 
 =============================================
-Primary Features
-=============================================
-All of the following features rely on PostSharp AOP (injection of
-code at compile-time based on attributes placed in your code):
-
-- Transaction and UnitOfWork (session and transaction per unit of work)
-  for all application types including Windows GUI, service and command-line.
-  Supports either System.Transaction or Nhibernate transactions based on
-  Castle Windsor configuration.
-- log4net logging.  Exception logging can be extended via interface and
-  Castle Windsor.
-
-The existing SharpArch.Wcf libraries will be moving to SharpArchContrib shortly.
-
-=============================================
 Documentation
 =============================================
 The documentation wiki is http://wiki.sharparchitecture.net/SharpArchContrib.ashx.  
