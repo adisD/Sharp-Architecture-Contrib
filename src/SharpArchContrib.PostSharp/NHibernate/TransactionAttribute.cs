@@ -4,9 +4,9 @@ using PostSharp.Extensibility;
 using PostSharp.Laos;
 using SharpArch.Data.NHibernate;
 using SharpArchContrib.Core.Logging;
+using SharpArchContrib.Data.NHibernate;
 
-namespace SharpArchContrib.Data.NHibernate
-{
+namespace SharpArchContrib.PostSharp.NHibernate {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     [MulticastAttributeUsage(MulticastTargets.Method, AllowMultiple = true)]
     [Serializable]

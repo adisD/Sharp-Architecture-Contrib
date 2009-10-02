@@ -87,7 +87,6 @@
     <Compile Include="Logging\ExceptionLogger.cs" />
     <Compile Include="Logging\IExceptionLogger.cs" />
     <Compile Include="Logging\Log4NetHelper.cs" />
-    <Compile Include="Logging\LogAttribute.cs" />
     <Compile Include="Logging\LoggingLevel.cs" />
     <Compile Include="Properties\CommonAssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

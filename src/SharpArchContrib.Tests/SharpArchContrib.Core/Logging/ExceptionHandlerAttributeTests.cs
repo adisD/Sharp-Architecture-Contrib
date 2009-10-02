@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using SharpArch.Testing.NUnit;
 using SharpArchContrib.Core.Logging;
+using SharpArchContrib.PostSharp.Logging;
 
 namespace Tests.SharpArchContrib.Core.Logging
 {

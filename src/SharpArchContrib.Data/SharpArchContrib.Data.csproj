@@ -107,9 +107,7 @@
     <Compile Include="NHibernate\ThreadSafeDictionary.cs" />
     <Compile Include="NHibernate\ThreadSessionStorage.cs" />
     <Compile Include="NHibernate\SystemTransactionManager.cs" />
-    <Compile Include="NHibernate\TransactionAttribute.cs" />
     <Compile Include="NHibernate\TransactionManagerBase.cs" />
-    <Compile Include="NHibernate\UnitOfWorkAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -120,9 +118,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SharpArchContrib.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CastleWindsor\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

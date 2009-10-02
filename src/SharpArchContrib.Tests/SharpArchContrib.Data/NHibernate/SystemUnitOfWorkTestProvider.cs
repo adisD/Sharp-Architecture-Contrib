@@ -1,4 +1,5 @@
 using SharpArchContrib.Data.NHibernate;
+using SharpArchContrib.PostSharp.NHibernate;
 
 namespace Tests.SharpArchContrib.Data.NHibernate
 {
