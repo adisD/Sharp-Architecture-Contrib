@@ -9,6 +9,7 @@ URLs of Interest:
 
 - Downloads: http://github.com/codai/Sharp-Architecture-Contrib/downloads
 - GitHub Repository: http://github.com/codai/Sharp-Architecture-Contrib
+- Downloads: http://github.com/codai/Sharp-Architecture-Contrib/downloads
 
 
 =============================================

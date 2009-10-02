@@ -9,7 +9,7 @@
   <!-- Artifact directories -->
   <property name="output.dir" value="${project.dir}\BuildOutput"/>
   <property name="bin.dir" value="${output.dir}\bin"/>
-  <property name="install.dir" value="${output.dir}\install"/>
+  <property name="distribution.dir" value="${output.dir}\distribution"/>
   <property name="test.output.dir" value="${output.dir}\test"/>
   
   <!-- Tool directories -->
@@ -55,6 +55,7 @@
     <delete dir="${output.dir}" failonerror="false"/>
     <mkdir dir="${output.dir}"/>
     <mkdir dir="${bin.dir}"/>
+    <mkdir dir="${distribution.dir}"/>
   </target>
 
   <target name="build" description="Compile the application." depends="ngenPostSharp">
@@ -98,6 +99,27 @@
         <exclude name="SharpArchContrib.Tests.pdb"/>
       </fileset>
     </copy>
+
+    <zip zipfile="${distribution.dir}\${project::get-name()}-${configuration}-${appVersion}.${revision}.zip">
+      <fileset basedir="${bin.dir}">
+        <include name="*.*" />
+      </fileset>
+    </zip>
+
+    <zip zipfile="${distribution.dir}\${project::get-name()}-source-${appVersion}.${revision}.zip">
+      <fileset basedir=".">
+        <include name="*.*" />
+        <include name="src/**/*.*" />
+        <include name="lib/**/*.*" />
+        <include name="tools/**/*.*"/>
+        <exclude name="**/*.user" />
+        <exclude name="**/*.cache" />
+        <exclude name="**/*.suo" />
+        <exclude name="src/**/bin/**" />
+        <exclude name="**/obj/**" />
+        <exclude name="**/_ReSharper.*/**" />
+      </fileset>
+    </zip>
   </target>
 
 
