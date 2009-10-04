@@ -1,0 +1,6 @@
+  <project name="ngenPostSharp.include">
+	  <target name="ngenPostSharp" description="Run Once. Improve perf of PostSharp.">
+		<exec program=" ${framework::get-assembly-directory(framework::get-target-framework())}\ngen.exe" 
+			  commandline='install "${postSharp.dir}\postsharp.exe"'/>
+	  </target>
+  </project>

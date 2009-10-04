@@ -15,16 +15,20 @@
   <!-- Tool directories -->
   <property name="tools.dir" value="${project.dir}\tools"/>
   <property name="nunit.dir" value="${tools.dir}\nunit\bin"/>
+  <property name="postSharp.dir" value="${tools.dir}\PostSharp"/>
 
   
   <!-- Version Info -->
   <property name="appVersion" value="0.1.0"/>
   <property name="revision" value="0"/>
   <property name="company.name" value="Codai, LLC"/>
+
+  <include buildfile="${tools.dir}\nant\includes\ngenPostSharp.include"/>
   
   <!-- *********************************************************
        The build 
        *********************************************************-->
+  
 
   <target name="help">
     <!--Enter tasks for help target-->
@@ -104,6 +108,10 @@
       <fileset basedir="${bin.dir}">
         <include name="*.*" />
       </fileset>
+      <fileset basedir="${project.dir}">
+        <include name="tools/PostSharp/**"/>
+        <include name="tools/nant/**"/>
+      </fileset>
     </zip>
 
     <zip zipfile="${distribution.dir}\${project::get-name()}-source-${appVersion}.${revision}.zip">
@@ -126,9 +134,5 @@
   <!-- *********************************************************
        Useful Targets 
        *********************************************************-->
-  <target name="ngenPostSharp" description="Run Once. Improve perf of PostSharp.">
-    <exec program=" ${framework::get-assembly-directory(framework::get-target-framework())}\ngen.exe" 
-          commandline='install "${tools.dir}\PostSharp\postsharp.exe"'/>
-  </target>
 </project>
 

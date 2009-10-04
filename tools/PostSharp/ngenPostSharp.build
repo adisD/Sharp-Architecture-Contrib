@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="NgenPostSharp" default="ngenPostSharp">
+<property name="postSharp.dir" value="${project::get-base-directory()}"/>
+<include buildfile="..\nant\includes\ngenPostSharp.include"/>
+</project>
+
