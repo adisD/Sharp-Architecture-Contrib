@@ -83,7 +83,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logging\ExceptionHandlerAttribute.cs" />
     <Compile Include="Logging\ExceptionLogger.cs" />
     <Compile Include="Logging\IExceptionLogger.cs" />
     <Compile Include="Logging\Log4NetHelper.cs" />
