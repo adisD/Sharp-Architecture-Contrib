@@ -100,13 +100,14 @@
       <fileset basedir="${project.dir}\src\SharpArchContrib.Tests\bin\${configuration}">
         <include name="SharpArchContrib.*.dll"/>
         <include name="SharpArchContrib.*.pdb"/>
-        <exclude name="SharpArchContrib.Tests.pdb"/>
+        <include name="PostSharp.*"/>
+        <exclude name="SharpArchContrib.Tests.*"/>
       </fileset>
     </copy>
 
     <zip zipfile="${distribution.dir}\${project::get-name()}-${configuration}-${appVersion}.${revision}.zip">
-      <fileset basedir="${bin.dir}">
-        <include name="*.*" />
+      <fileset basedir="${output.dir}">
+        <include name="${bin.dir}/*.*" />
       </fileset>
       <fileset basedir="${project.dir}">
         <include name="tools/PostSharp/**"/>
