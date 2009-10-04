@@ -1,10 +1,8 @@
 ﻿using SharpArch.Core.PersistenceSupport;
 using Tests.DomainModel.Entities;
 
-namespace Tests.SharpArchContrib.Data.NHibernate
-{
-    public interface ITransactionTestProvider
-    {
+namespace Tests.SharpArchContrib.PostSharp.NHibernate {
+    public interface ITransactionTestProvider {
         IRepository<TestEntity> TestEntityRepository { get; set; }
         void InitTransactionManager();
         void Commit(string testEntityName);

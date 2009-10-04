@@ -1,7 +1,5 @@
-﻿namespace SharpArchContrib.Core.Logging
-{
-    public enum LoggingLevel
-    {
+﻿namespace SharpArchContrib.Core.Logging {
+    public enum LoggingLevel {
         All,
         Debug,
         Info,

@@ -1,10 +1,16 @@
 using System;
 using Microsoft.Practices.ServiceLocation;
+using PostSharp.Extensibility;
 using PostSharp.Laos;
+using SharpArchContrib.Core.Logging;
 
-namespace SharpArchContrib.Core.Logging {
+namespace SharpArchContrib.PostSharp.Logging {
     [Serializable]
-    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false,
+        Inherited = false)]
+    [MulticastAttributeUsage(
+        MulticastTargets.Method | MulticastTargets.InstanceConstructor | MulticastTargets.StaticConstructor,
+        AllowMultiple = true)]
     public sealed class ExceptionHandlerAttribute : OnExceptionAspect {
         private IExceptionLogger exceptionLogger;
 

@@ -17,7 +17,7 @@ namespace SharpArchContrib.PostSharp.Logging {
     public class LogAttribute : OnMethodBoundaryAspect {
         private IExceptionLogger exceptionLogger;
 
-        public LogAttribute(){
+        public LogAttribute() {
             EntryLevel = LoggingLevel.Debug;
             SuccessLevel = LoggingLevel.Debug;
             ExceptionLevel = LoggingLevel.Error;
@@ -27,8 +27,8 @@ namespace SharpArchContrib.PostSharp.Logging {
         public LoggingLevel SuccessLevel { get; set; }
         public LoggingLevel ExceptionLevel { get; set; }
 
-        private IExceptionLogger ExceptionLogger{
-            get{
+        private IExceptionLogger ExceptionLogger {
+            get {
                 if (exceptionLogger == null) {
                     exceptionLogger = ServiceLocator.Current.GetInstance<IExceptionLogger>();
                 }
@@ -36,7 +36,7 @@ namespace SharpArchContrib.PostSharp.Logging {
             }
         }
 
-        public override void OnEntry(MethodExecutionEventArgs eventArgs){
+        public override void OnEntry(MethodExecutionEventArgs eventArgs) {
             ILog logger = LogManager.GetLogger(eventArgs.Method.DeclaringType);
             if (ShouldLog(logger, EntryLevel, eventArgs)) {
                 var logMessage = new StringBuilder();
@@ -57,7 +57,7 @@ namespace SharpArchContrib.PostSharp.Logging {
             }
         }
 
-        public override void OnSuccess(MethodExecutionEventArgs eventArgs){
+        public override void OnSuccess(MethodExecutionEventArgs eventArgs) {
             ILog logger = LogManager.GetLogger(eventArgs.Method.DeclaringType);
             if (ShouldLog(logger, SuccessLevel, eventArgs)) {
                 logger.Log(SuccessLevel,
@@ -66,14 +66,14 @@ namespace SharpArchContrib.PostSharp.Logging {
             }
         }
 
-        public override void OnException(MethodExecutionEventArgs eventArgs){
+        public override void OnException(MethodExecutionEventArgs eventArgs) {
             ILog logger = LogManager.GetLogger(eventArgs.Method.DeclaringType);
             if (ShouldLog(logger, ExceptionLevel, eventArgs)) {
                 ExceptionLogger.LogException(eventArgs.Exception, false, eventArgs.Method.DeclaringType);
             }
         }
 
-        private bool ShouldLog(ILog logger, LoggingLevel loggingLevel, MethodExecutionEventArgs args){
+        private bool ShouldLog(ILog logger, LoggingLevel loggingLevel, MethodExecutionEventArgs args) {
             if (args != null && args.Method != null && args.Method.Name != null) {
                 return logger.IsEnabledFor(loggingLevel);
             }

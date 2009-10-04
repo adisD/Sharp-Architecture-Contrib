@@ -1,14 +1,10 @@
-﻿using PostSharp.Laos;
-
-namespace SharpArchContrib.Data.NHibernate
-{
-    public interface ITransactionManager
-    {
+﻿namespace SharpArchContrib.Data.NHibernate {
+    public interface ITransactionManager {
         int TransactionDepth { get; }
-        void PushTransaction(string factoryKey, MethodExecutionEventArgs eventArgs);
+        object PushTransaction(string factoryKey, object transactionState);
         bool TransactionIsActive(string factoryKey);
-        void PopTransaction(string factoryKey, MethodExecutionEventArgs eventArgs);
-        void RollbackTransaction(string factoryKey, MethodExecutionEventArgs eventArgs);
-        void CommitTransaction(string factoryKey, MethodExecutionEventArgs eventArgs);
+        object PopTransaction(string factoryKey, object transactionState);
+        object RollbackTransaction(string factoryKey, object transactionState);
+        object CommitTransaction(string factoryKey, object transactionState);
     }
 }

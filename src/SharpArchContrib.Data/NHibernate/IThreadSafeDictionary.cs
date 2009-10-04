@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace SharpArchContrib.Data.NHibernate
-{
+namespace SharpArchContrib.Data.NHibernate {
     /// <summary>
     /// Taken from http://devplanet.com/blogs/brianr/archive/2008/09/29/thread-safe-dictionary-update.aspx
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
-    public interface IThreadSafeDictionary<TKey, TValue> : IDictionary<TKey, TValue>
-    {
+    public interface IThreadSafeDictionary<TKey, TValue> : IDictionary<TKey, TValue> {
         /// <summary>
         /// Merge is similar to the SQL merge or upsert statement.  
         /// </summary>

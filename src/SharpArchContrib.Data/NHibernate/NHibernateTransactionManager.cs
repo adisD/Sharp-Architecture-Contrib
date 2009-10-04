@@ -1,49 +1,45 @@
 using System;
 using NHibernate;
-using PostSharp.Laos;
 using SharpArch.Data.NHibernate;
 
-namespace SharpArchContrib.Data.NHibernate
-{
+namespace SharpArchContrib.Data.NHibernate {
     /// <summary>
     /// Provides support for System.Transaction transactions
     /// </summary>
     [Serializable]
-    public class NHibernateTransactionManager : TransactionManagerBase
-    {
-        public override void PushTransaction(string factoryKey, MethodExecutionEventArgs eventArgs)
-        {
-            base.PushTransaction(factoryKey, eventArgs);
+    public class NHibernateTransactionManager : TransactionManagerBase {
+        public override object PushTransaction(string factoryKey, object transactionState) {
+            transactionState = base.PushTransaction(factoryKey, transactionState);
 
             ITransaction transaction = NHibernateSession.CurrentFor(factoryKey).Transaction;
-            if (!transaction.IsActive)
-            {
+            if (!transaction.IsActive) {
                 transaction.Begin();
             }
+
+            return transactionState;
         }
 
-        public override bool TransactionIsActive(string factoryKey)
-        {
+        public override bool TransactionIsActive(string factoryKey) {
             ITransaction transaction = NHibernateSession.CurrentFor(factoryKey).Transaction;
             return transaction != null && transaction.IsActive;
         }
 
-        public override void RollbackTransaction(string factoryKey, MethodExecutionEventArgs eventArgs)
-        {
+        public override object RollbackTransaction(string factoryKey, object transactionState) {
             ITransaction transaction = NHibernateSession.CurrentFor(factoryKey).Transaction;
-            if (TransactionDepth == 1 && transaction.IsActive)
-            {
+            if (TransactionDepth == 1 && transaction.IsActive) {
                 transaction.Rollback();
             }
+
+            return transactionState;
         }
 
-        public override void CommitTransaction(string factoryKey, MethodExecutionEventArgs eventArgs)
-        {
+        public override object CommitTransaction(string factoryKey, object transactionState) {
             ITransaction transaction = NHibernateSession.CurrentFor(factoryKey).Transaction;
-            if (TransactionDepth == 1 && transaction.IsActive)
-            {
+            if (TransactionDepth == 1 && transaction.IsActive) {
                 transaction.Commit();
             }
+
+            return transactionState;
         }
     }
 }

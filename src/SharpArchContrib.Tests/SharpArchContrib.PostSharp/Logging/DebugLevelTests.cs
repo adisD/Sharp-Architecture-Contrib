@@ -4,24 +4,18 @@ using SharpArch.Testing.NUnit;
 using SharpArchContrib.Core.Logging;
 using SharpArchContrib.PostSharp.Logging;
 
-namespace Tests.SharpArchContrib.Core.Logging
-{
+namespace Tests.SharpArchContrib.PostSharp.Logging {
     [TestFixture]
-    public class DebugLevelTests
-    {
+    public class DebugLevelTests {
         [Log]
-        private void DebugLevelTestsCallThatLogs()
-        {
-        }
+        private void DebugLevelTestsCallThatLogs() {}
 
+        [Log]
         [Log(EntryLevel = LoggingLevel.Info)]
-        private void DebugLevelTestsCallThatDoesNotLog()
-        {
-        }
+        private void DebugLevelTestsCallThatDoesNotLog() {}
 
         [Test]
-        public void LoggingDebugEntryWorks()
-        {
+        public void LoggingDebugEntryWorks() {
             DebugLevelTestsCallThatLogs();
             DebugLevelTestsCallThatDoesNotLog();
             string logPath =

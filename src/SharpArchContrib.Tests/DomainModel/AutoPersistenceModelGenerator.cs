@@ -8,14 +8,11 @@ using SharpArch.Data.NHibernate.FluentNHibernate;
 using Tests.DomainModel.Conventions;
 using Tests.DomainModel.Entities;
 
-namespace Tests.DomainModel
-{
-    public class AutoPersistenceModelGenerator : IAutoPersistenceModelGenerator
-    {
+namespace Tests.DomainModel {
+    public class AutoPersistenceModelGenerator : IAutoPersistenceModelGenerator {
         #region IAutoPersistenceModelGenerator Members
 
-        public AutoPersistenceModel Generate()
-        {
+        public AutoPersistenceModel Generate() {
             var mappings = new AutoPersistenceModel();
             mappings.AddEntityAssembly(typeof (TestEntity).Assembly).Where(GetAutoMappingFilter);
             mappings.Conventions.Setup(GetConventions());
@@ -28,13 +25,11 @@ namespace Tests.DomainModel
 
         #endregion
 
-        private Action<AutoMappingExpressions> GetSetup()
-        {
+        private Action<AutoMappingExpressions> GetSetup() {
             return c => { c.FindIdentity = type => type.Name == "Id"; };
         }
 
-        private Action<IConventionFinder> GetConventions()
-        {
+        private Action<IConventionFinder> GetConventions() {
             return c =>
                        {
                            c.Add<PrimaryKeyConvention>();
@@ -47,8 +42,7 @@ namespace Tests.DomainModel
         /// <summary>
         /// Provides a filter for only including types which inherit from the IEntityWithTypedId interface.
         /// </summary>
-        private bool GetAutoMappingFilter(Type t)
-        {
+        private bool GetAutoMappingFilter(Type t) {
             return t.GetInterfaces().Any(x =>
                                          x.IsGenericType &&
                                          x.GetGenericTypeDefinition() == typeof (IEntityWithTypedId<>));

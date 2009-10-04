@@ -102,6 +102,7 @@
     <Compile Include="..\SharpArchContrib.Core\Properties\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Logging\ExceptionHandlerAttribute.cs" />
     <Compile Include="Logging\LogAttribute.cs" />
     <Compile Include="NHibernate\TransactionAttribute.cs" />
     <Compile Include="NHibernate\UnitOfWorkAttribute.cs" />
