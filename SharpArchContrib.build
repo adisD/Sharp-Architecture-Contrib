@@ -67,7 +67,7 @@
     <mkdir dir="${distribution.dir}"/>
   </target>
 
-  <target name="build" description="Compile the application." depends="ngenPostSharp">
+  <target name="build" description="Compile the application.">
     <call target="ngenPostSharp" if="${useNgen}"/> 
     <msbuild project="SharpArchContrib.sln" target="Rebuild">
       <property name="Configuration" value="${configuration}"/>
