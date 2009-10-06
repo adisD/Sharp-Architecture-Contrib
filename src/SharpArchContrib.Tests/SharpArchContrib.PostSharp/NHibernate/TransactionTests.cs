@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 namespace Tests.SharpArchContrib.PostSharp.NHibernate {
     [TestFixture]
+    [Category("File DB Tests")]
     public class TransactionTests : TransactionTestsBase {
         private const string TestEntityName = "TransactionTest";
 
@@ -30,6 +31,19 @@ namespace Tests.SharpArchContrib.PostSharp.NHibernate {
         //Tests call Setup and TearDown manually for each iteration of the loop since
         //we want a clean database for each iteration.  We could use the parameterized
         //test feature of Nunit 2.5 but, unfortunately that doesn't work with all test runners (e.g. Resharper)
+
+        [Test]
+        public void SingleOperation()
+        {
+            foreach (ITransactionTestProvider transactionTestProvider in transactionTestProviders)
+            {
+                SetUp();
+                transactionTestProvider.InitTransactionManager();
+                transactionTestProvider.DoCommit(TestEntityName);
+                transactionTestProvider.CheckNumberOfEntities(1);
+                TearDown();
+            }
+        }
 
         [Test]
         public void MultipleOperations() {

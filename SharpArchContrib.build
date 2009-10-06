@@ -28,6 +28,12 @@
        This can be overriden with -D:useNgen=true in the TeamCity configuration -->
   <property name="useNgen" value="${not property::exists('build.number')}"/>
 
+  <!-- Set this to false to allow sql lite tests requiring a in file SQLLite database to run.
+       Any test that needs to close the connection during the test has to go to a file since
+       closing the connection to an in memory database causes the schema to be lost.
+       When this is true, all the tests of UnitOfWork and Transaction are off.  -->
+  <property name="excludeSqlLiteFileTests" value="true"/>
+
   <include buildfile="${tools.dir}\nant\includes\ngenPostSharp.include"/>
   
   <!-- *********************************************************
@@ -94,6 +100,18 @@
   </target>
 
   <target name="test">
+    <call target="testExcludeFileDBTests" if="${excludeSqlLiteFileTests}"/>
+    <call target="allTests" unless="${excludeSqlLiteFileTests}"/>
+  </target>
+
+  <target name="testExcludeFileDBTests">
+    <exec program="nunit-console.exe" workingdir="${nunit.dir}" basedir="${nunit.dir}" resultproperty="testResult">
+      <arg value="${project.dir}\src\SharpArchContrib.Tests\bin\${configuration}\SharpArchContrib.Tests.dll"/>
+      <arg value='/exclude="File DB Tests"'/>
+    </exec>  
+  </target>
+
+  <target name="allTests">
     <exec program="nunit-console.exe" workingdir="${nunit.dir}" basedir="${nunit.dir}" resultproperty="testResult">
       <arg value="${project.dir}\src\SharpArchContrib.Tests\bin\${configuration}\SharpArchContrib.Tests.dll"/>
     </exec>
