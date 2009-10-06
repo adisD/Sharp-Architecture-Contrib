@@ -1,4 +1,10 @@
 =============================================
+LINE ENDINGS AND GIT
+=============================================
+Make sure to set AutoCRLF=true in your Git tool before cloning this repository. 
+See http://help.github.com/dealing-with-lineendings/ for more information.
+
+=============================================
 Additional Contributions to Sharp Architcture
 =============================================
 This is an early beta containing additional contributions to Sharp Architecture.
