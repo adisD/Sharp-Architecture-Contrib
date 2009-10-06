@@ -22,6 +22,11 @@
   <property name="appVersion" value="0.1.0"/>
   <property name="revision" value="0"/>
   <property name="company.name" value="Codai, LLC"/>
+  
+  <!-- Controls NGen Use -->
+  <!-- Cannot NGen on the Code Better TeamCity server so we default to false when we are on TeamCity.
+       This can be overriden with -D:useNgen=true in the TeamCity configuration -->
+  <property name="useNgen" value="${not property::exists('build.number')}"/>
 
   <include buildfile="${tools.dir}\nant\includes\ngenPostSharp.include"/>
   
@@ -63,6 +68,7 @@
   </target>
 
   <target name="build" description="Compile the application." depends="ngenPostSharp">
+    <call target="ngenPostSharp" if="${useNgen}"/> 
     <msbuild project="SharpArchContrib.sln" target="Rebuild">
       <property name="Configuration" value="${configuration}"/>
     </msbuild>
