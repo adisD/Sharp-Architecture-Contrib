@@ -84,6 +84,10 @@
     <if test="${property::exists('build.number')}">
       <property name="revision" value="${build.number}"/>
     </if>
+    <echo message="******************************************"/>
+    <echo message="Version: ${appVersion}"/>
+    <echo message="File Version: ${appVersion}.${revision}"/>
+    <echo message="*******************************************"/>
     <asminfo output="${project.dir}\src\SharpArchContrib.Core\Properties\CommonAssemblyInfo.cs" language="CSharp">
       <imports>
         <import namespace="System.Reflection" />
